@@ -1,11 +1,14 @@
-import "./globals.css";
+import { AppSidebar } from "@/components/sidebar/app-sidebar";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import type { Metadata } from "next";
+import { ThemeProvider } from "next-themes";
 import { Inter } from "next/font/google";
 import { headers } from "next/headers";
 import { type ReactNode } from "react";
+import { Toaster } from "sonner";
 import { cookieToInitialState } from "wagmi";
-
 import { getConfig } from "../wagmi";
+import "./globals.css";
 import { Providers } from "./providers";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -21,9 +24,29 @@ export default async function RootLayout(props: { children: ReactNode }) {
     (await headers()).get("cookie")
   );
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={`${inter.className} antialiased`}>
-        <Providers initialState={initialState}>{props.children}</Providers>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <SidebarProvider>
+            <AppSidebar />
+            <div className="w-full flex flex-col">
+              <header className="h-12 flex items-center px-4">
+                <SidebarTrigger />
+              </header>
+              <main className="p-4 space-y-4">
+                <Providers initialState={initialState}>
+                  {props.children}
+                </Providers>
+              </main>
+            </div>
+            <Toaster />
+          </SidebarProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

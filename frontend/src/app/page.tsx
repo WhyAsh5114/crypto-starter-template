@@ -1,5 +1,7 @@
 "use client";
 
+import TypographyH2 from "@/components/typography/h2";
+import { Button } from "@/components/ui/button";
 import { useAccount, useConnect, useDisconnect } from "wagmi";
 
 function App() {
@@ -10,7 +12,7 @@ function App() {
   return (
     <>
       <div>
-        <h2>Account</h2>
+        <TypographyH2>Account</TypographyH2>
 
         <div>
           status: {account.status}
@@ -21,23 +23,25 @@ function App() {
         </div>
 
         {account.status === "connected" && (
-          <button type="button" onClick={() => disconnect()}>
+          <Button type="button" onClick={() => disconnect()}>
             Disconnect
-          </button>
+          </Button>
         )}
       </div>
 
       <div>
-        <h2>Connect</h2>
-        {connectors.map((connector) => (
-          <button
-            key={connector.uid}
-            onClick={() => connect({ connector })}
-            type="button"
-          >
-            {connector.name}
-          </button>
-        ))}
+        <TypographyH2>Connect</TypographyH2>
+        <div className="grid grid-flow-col w-32 gap-2">
+          {connectors.map((connector) => (
+            <Button
+              key={connector.uid}
+              onClick={() => connect({ connector })}
+              type="button"
+            >
+              {connector.name}
+            </Button>
+          ))}
+        </div>
         <div>{status}</div>
         <div>{error?.message}</div>
       </div>
