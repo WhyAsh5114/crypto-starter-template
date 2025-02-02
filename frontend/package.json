@@ -2,6 +2,7 @@
   "name": "frontend",
   "private": true,
   "version": "0.0.0",
+  "packageManager": "npm@11.0.0",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -69,6 +70,7 @@
     "@types/react-dom": "^19",
     "@wagmi/cli": "latest",
     "autoprefixer": "^10.4.20",
+    "hardhat": "^2.22.18",
     "postcss": "^8.5.1",
     "typescript": "^5.4.5"
   }

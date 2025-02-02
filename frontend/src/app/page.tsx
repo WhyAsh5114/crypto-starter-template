@@ -3,6 +3,8 @@
 import TypographyH2 from "@/components/typography/h2";
 import { Button } from "@/components/ui/button";
 import { useAccount, useConnect, useDisconnect } from "wagmi";
+import { DeployContract } from "./components/deploy-contract";
+import { InteractWithContract } from "./components/interact-with-contract";
 
 function App() {
   const account = useAccount();
@@ -45,6 +47,9 @@ function App() {
         <div>{status}</div>
         <div>{error?.message}</div>
       </div>
+
+      <DeployContract />
+      <InteractWithContract />
     </>
   );
 }
