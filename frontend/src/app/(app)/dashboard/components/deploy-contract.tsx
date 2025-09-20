@@ -1,6 +1,5 @@
 "use client";
 
-import LockAbi from "@/../../../blockchain/artifacts/contracts/Lock.sol/Lock.json";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -12,7 +11,7 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { lockAbi } from "@/lib/wagmi-generated";
+import { lockAbi, lockBytecode } from "@/lib/wagmi-generated";
 import { LoaderCircle } from "lucide-react";
 import { useEffect } from "react";
 import { toast } from "sonner";
@@ -31,7 +30,7 @@ export function DeployContract() {
 
     await deployContractAsync({
       abi: lockAbi,
-      bytecode: LockAbi.bytecode as `0x${string}`,
+      bytecode: lockBytecode,
       args: [BigInt(unlockTime)],
       value: amount,
     });

@@ -35,31 +35,36 @@ export function InteractWithContract() {
     error,
     isError,
   } = useReadContracts({
-    contracts: [{ ...contractBaseConfig, functionName: "unlockTime" }],
+    contracts: [
+      { ...contractBaseConfig, functionName: "unlockTime" },
+      { ...contractBaseConfig, functionName: "owner" }
+    ],
     query: { enabled: contractBaseConfig.address?.startsWith(`0x`) },
   });
 
   useEffect(() => {
     if (!readData) return;
-    if (readData[0].error) {
-      toast.error("An error occurred");
-      console.error(readData[0].error.message);
+    if (readData[0].error || readData[1].error) {
+      toast.error("An error occurred reading contract");
+      console.error("Read errors:", readData[0].error?.message, readData[1].error?.message);
       return;
     }
 
-    const unlockDate = new Date(Number(readData[0]?.result) * 1000);
+    const unlockTime = readData[0]?.result as bigint;
+    const owner = readData[1]?.result as string;
+    const unlockDate = new Date(Number(unlockTime) * 1000);
     setCanUnlock(unlockDate < new Date());
 
     toast.success("Read contract successfully", {
       description: (
-        <p>
-          Unlock time: {unlockDate.toLocaleString()}
-          <br />
-          {canUnlock ? "Can be unlocked now" : "Contract is still locked"}
-        </p>
+        <div>
+          <p><strong>Owner:</strong> {owner}</p>
+          <p><strong>Unlock time:</strong> {unlockDate.toLocaleString()}</p>
+          <p><strong>Status:</strong> {canUnlock ? "Can be unlocked now" : "Contract is still locked"}</p>
+        </div>
       ),
     });
-  }, [readData]);
+  }, [readData, canUnlock]);
 
   const { data: hash, writeContract, isPending } = useWriteContract();
 
